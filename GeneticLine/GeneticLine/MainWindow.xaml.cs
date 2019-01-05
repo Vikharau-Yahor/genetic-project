@@ -76,7 +76,7 @@ namespace GeneticLine
 				lineIndex += pointsStep;
 				goals.Add(lineElements[lineIndex].GetStartPoint());
 			}
-			//renderPoints(goal.ToArray());
+			renderPoints(goals.ToArray());
 			return goals.ToArray();
 		}
 

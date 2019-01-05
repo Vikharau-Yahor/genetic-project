@@ -43,7 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Evolution.cs" />
+    <Compile Include="Gene.cs" />
     <Compile Include="Individual.cs" />
+    <Compile Include="LifeStatus.cs" />
     <Compile Include="Mutator.cs" />
     <Compile Include="Population.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

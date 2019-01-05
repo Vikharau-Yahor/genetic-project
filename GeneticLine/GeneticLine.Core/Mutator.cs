@@ -18,14 +18,22 @@ namespace GeneticLine.Core
 			XMutationRange = xMutationRange;
 		}
 
-		public static void FillByRandoms(Individual individual)
+		public static void InitialMutate(Individual individual, Gene xGoal, Gene yGoal)
 		{
 			var random = new Random();
-			for (int i = 0; i < individual.points.Count(); i++)
-			{
-				individual.points[i].X = random.Next(XMutationRange);
-				individual.points[i].Y = random.Next(YMutationRange);
-			}
-		}
-	}
+
+            var xValue = random.Next(XMutationRange); ;
+            var xQuality = getQuality(xValue, xGoal.Value);
+            individual.XGene.Update(xValue, xQuality);
+
+            var yValue = random.Next(YMutationRange); ;
+            var yQuality = getQuality(yValue, yGoal.Value);
+            individual.YGene.Update(yValue, yQuality);
+        }
+
+        private static double getQuality(double geneValue, double perfectValue)
+        {
+            return (Math.Abs(perfectValue - geneValue) * -1) + 100;
+        }
+    }
 }

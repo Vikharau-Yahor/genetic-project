@@ -10,7 +10,8 @@ namespace GeneticLine.Core
 {
 	public class Evolution
 	{
-		private Point[] _goal;
+		private Point[] _goals;
+        private const double DeathRate = 0.4;
 		private bool evolutionStopped;
 		private int evolutionSpeed;
 
@@ -18,9 +19,9 @@ namespace GeneticLine.Core
 		private int _populationSize;
 		private int _individualPointsCount;
 
-		public Evolution(Point[] goal, int populationSize, int individualPointsCount)
+		public Evolution(Point[] goals, int populationSize, int individualPointsCount)
 		{
-			_goal = goal;
+            _goals = goals;
 			_populationSize = populationSize;
 			_individualPointsCount = individualPointsCount;
 
@@ -28,8 +29,17 @@ namespace GeneticLine.Core
 
 		public void RunEvolutionCycle()
 		{
-			// create population with random individuals
-			var population = new Population(_populationSize, _individualPointsCount);
+            // create populations
+            var populations = new List<Population>();
+            foreach (var goal in _goals)
+            {
+                var xGene = new Gene();
+                var yGene = new Gene();
+                xGene.Update(goal.X, 100);
+                yGene.Update(goal.Y, 100);
+                populations.Add(new Population(_populationSize, DeathRate, xGene, yGene));
+            }
+
 			while (!evolutionStopped)
 			{
 				//Evolute(population);
