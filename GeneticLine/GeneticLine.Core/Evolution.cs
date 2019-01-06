@@ -12,44 +12,61 @@ namespace GeneticLine.Core
 	{
 		private Point[] _goals;
         private const double DeathRate = 0.4;
-		private bool evolutionStopped;
-		private int evolutionSpeed;
-
+		private bool _evolutionStopped = false;
+		private int _evolutionSpeed = 250;
+		private List<Task> _lifeCycleTasks = new List<Task>();
 		//evolution laws
 		private int _populationSize;
-		private int _individualPointsCount;
 
-		public Evolution(Point[] goals, int populationSize, int individualPointsCount)
+		public List<Population> Populations { get; private set; }
+
+		public Evolution(Point[] goals, int populationSize)
 		{
-            _goals = goals;
+			_goals = goals;
 			_populationSize = populationSize;
-			_individualPointsCount = individualPointsCount;
+			Populations = new List<Population>();
+			var id = 1;
 
+			foreach (var goal in _goals)
+			{
+				var xGene = new Gene();
+				var yGene = new Gene();
+				xGene.Update(goal.X, 100);
+				yGene.Update(goal.Y, 100);
+				Populations.Add(new Population(id, _populationSize, DeathRate, xGene, yGene));
+				id++;
+			}
 		}
 
 		public void RunEvolutionCycle()
 		{
-            // create populations
-            var populations = new List<Population>();
-            foreach (var goal in _goals)
-            {
-                var xGene = new Gene();
-                var yGene = new Gene();
-                xGene.Update(goal.X, 100);
-                yGene.Update(goal.Y, 100);
-                populations.Add(new Population(_populationSize, DeathRate, xGene, yGene));
-            }
-
-			while (!evolutionStopped)
+			// todo for all populations
+			//var population = Populations.First();
+			foreach (var population in Populations)
 			{
-				//Evolute(population);
-				// population evolute
-				// get best individual and render it
-				// * evaluate survival rate for every individual + mutation chance for chomosomes
-				// * calculate survivalDieRate, kill  individuals that have low rate
-				// * create new individuals from survived parents and mutate chromosomes for all (??)
-				Thread.Sleep(evolutionSpeed);
+				_lifeCycleTasks.Add(new Task(() => runEvolutionCycle(population)));
 			}
+
+			foreach (var task in _lifeCycleTasks)
+			{
+				task.Start();
+			}
+		}
+
+		private void runEvolutionCycle(Population population)
+		{
+			while (!_evolutionStopped)
+			{
+				population.ExecuteLifeCycle();
+				Thread.Sleep(_evolutionSpeed);
+			}
+		}
+
+		public void Stop()
+		{
+			_evolutionStopped = true;
+			Task.WaitAll(_lifeCycleTasks.ToArray());
+			_lifeCycleTasks.Clear();
 		}
 				
 	}

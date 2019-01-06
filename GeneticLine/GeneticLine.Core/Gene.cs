@@ -10,7 +10,18 @@ namespace GeneticLine.Core
     {
         public double Value { get; private set; }
         public double Quality { get; private set; }
-        
+
+		public Gene()
+		{
+
+		}
+
+		public Gene(Gene inheritedGene)
+		{
+			Value = inheritedGene.Value;
+			Quality = inheritedGene.Quality;
+		}
+
         public void Update(double value, double quality)
         {
             Value = value;

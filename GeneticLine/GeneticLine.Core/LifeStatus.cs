@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GeneticLine.Core
+﻿namespace GeneticLine.Core
 {
     public enum LifeStatus: byte
     {
-        Alive,
+        Childhood,
+		AdultLife,
         Dead
     }
 }

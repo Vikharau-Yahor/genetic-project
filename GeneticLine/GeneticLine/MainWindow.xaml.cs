@@ -26,6 +26,7 @@ namespace GeneticLine
 		public MainWindow()
 		{
 			InitializeComponent();
+			Painter.Init(CanvasGenerated);
 		}
 
 		private void CanvasInitial_MouseDown(object sender, MouseButtonEventArgs e)
@@ -56,11 +57,23 @@ namespace GeneticLine
 
 		private void Generate_Click(object sender, RoutedEventArgs e)
 		{
-			//clearAndPaintRandom();
+			Mutator.Init(Convert.ToInt32(CanvasGenerated.ActualHeight), Convert.ToInt32(CanvasGenerated.ActualWidth));
 			var goals = buildGoals();
-			//_evolution = new Evolution(goal);
+			_evolution = new Evolution(goals, populationSize: 10);
+
+			foreach (var population in _evolution.Populations)
+			{
+				population.OnPopulationLifecycleEnd += Render;
+			}
+
+			_evolution.RunEvolutionCycle();
 		}
 
+
+		private void Render(Population population)
+		{
+			Dispatcher.InvokeAsync(() => Painter.Render(population));
+		}
 
 		private Point[] buildGoals()
 		{
@@ -76,7 +89,6 @@ namespace GeneticLine
 				lineIndex += pointsStep;
 				goals.Add(lineElements[lineIndex].GetStartPoint());
 			}
-			renderPoints(goals.ToArray());
 			return goals.ToArray();
 		}
 
@@ -112,6 +124,16 @@ namespace GeneticLine
 				line.Stroke = new SolidColorBrush(Colors.Black);
 				CanvasGenerated.Children.Add(line);
 			}
+		}
+
+		private void BStopEvolution_Click(object sender, RoutedEventArgs e)
+		{
+			_evolution.Stop();
+		}
+
+		private void BContinueEvolution_Click(object sender, RoutedEventArgs e)
+		{
+			_evolution.RunEvolutionCycle();
 		}
 	}
 }

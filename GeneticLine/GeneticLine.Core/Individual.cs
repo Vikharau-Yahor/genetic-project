@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 
 namespace GeneticLine.Core
 {
@@ -12,7 +13,7 @@ namespace GeneticLine.Core
 
         public Individual()
         {
-            LifeStatus = LifeStatus.Alive;
+            LifeStatus = LifeStatus.Childhood;
             XGene = new Gene();
             YGene = new Gene();
         }
@@ -22,16 +23,36 @@ namespace GeneticLine.Core
             return new Point(XGene.Value, YGene.Value);
         }
 
+		public void Rest()
+		{
+			// individual doesn't have to do any actions
+		}
+
         public void Kill()
         {
             LifeStatus = LifeStatus.Dead;
         }
 
-        public void Reborn(Gene newXGene, Gene newYGene)
+		public void Grow()
+		{
+			if (LifeStatus != LifeStatus.Childhood) throw new Exception($"Individual can't grow, because his lifeStatus is { LifeStatus }");
+
+			LifeStatus = LifeStatus.AdultLife;
+		}
+
+		public void Reborn(Individual firstParent, Individual secondParent)
         {
-            LifeStatus = LifeStatus.Alive;
-            XGene = newXGene;
-            YGene = newYGene;
-        }
+          var inheritedXGene = (firstParent.XGene.Quality > secondParent.XGene.Quality)
+				? firstParent.XGene 
+				: secondParent.XGene;
+
+			var inheritedYGene = (firstParent.YGene.Quality > secondParent.YGene.Quality)
+				? firstParent.YGene
+				: secondParent.YGene;
+
+			XGene = new Gene(inheritedXGene);
+			YGene = new Gene(inheritedYGene);
+			LifeStatus = LifeStatus.Childhood;
+		}
     }
 }
