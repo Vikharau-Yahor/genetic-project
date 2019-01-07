@@ -72,7 +72,7 @@ namespace GeneticLine
 
 		private void Render(Population population)
 		{
-			Dispatcher.InvokeAsync(() => Painter.Render(population));
+			Dispatcher.Invoke(() => Painter.Render(population));
 		}
 
 		private Point[] buildGoals()
