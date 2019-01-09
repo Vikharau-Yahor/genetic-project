@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Windows;
 
-namespace GeneticLine.Core
+namespace GeneticComiVouager.Core
 {
     public class Individual
     {
-        public Gene XGene { get; set; }
-        public Gene YGene { get; set; }
+        public Gene Gene { get; set; }
 
         public LifeStatus LifeStatus { get; private set; }
         public double SurvivalRate { get; set; }
@@ -14,13 +13,7 @@ namespace GeneticLine.Core
         public Individual()
         {
             LifeStatus = LifeStatus.Childhood;
-            XGene = new Gene();
-            YGene = new Gene();
-        }
-
-        public Point GetPoint(double x, double y)
-        {
-            return new Point(XGene.Value, YGene.Value);
+            Gene = new Gene();
         }
 
 		public void Rest()
@@ -42,16 +35,11 @@ namespace GeneticLine.Core
 
 		public void Reborn(Individual firstParent, Individual secondParent)
         {
-          var inheritedXGene = (firstParent.XGene.Quality > secondParent.XGene.Quality)
-				? firstParent.XGene 
-				: secondParent.XGene;
+          var inheritedGene = (firstParent.Gene.Quality > secondParent.Gene.Quality)
+				? firstParent.Gene 
+				: secondParent.Gene;
 
-			var inheritedYGene = (firstParent.YGene.Quality > secondParent.YGene.Quality)
-				? firstParent.YGene
-				: secondParent.YGene;
-
-			XGene = new Gene(inheritedXGene);
-			YGene = new Gene(inheritedYGene);
+			Gene = new Gene(inheritedGene);
 			LifeStatus = LifeStatus.Childhood;
 		}
     }

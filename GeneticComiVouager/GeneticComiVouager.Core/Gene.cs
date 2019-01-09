@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GeneticLine.Core
+namespace GeneticComiVouager.Core
 {
     public class Gene
     {
-        public double Value { get; private set; }
+        public int[] Value { get; private set; }
         public double Quality { get; private set; }
 
 		public Gene()
@@ -18,11 +18,17 @@ namespace GeneticLine.Core
 
 		public Gene(Gene inheritedGene)
 		{
-			Value = inheritedGene.Value;
+			Value = new int[inheritedGene.Value.Length];
+
+			for (int i = 0; i < inheritedGene.Value.Length; i++)
+			{
+				Value[i] = inheritedGene.Value[i];
+			}
+
 			Quality = inheritedGene.Quality;
 		}
 
-        public void Update(double value, double quality)
+        public void Update(int[] value, double quality)
         {
             Value = value;
             Quality = quality;

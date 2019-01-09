@@ -50,7 +50,9 @@
     <Compile Include="LifeStatus.cs" />
     <Compile Include="Mutator.cs" />
     <Compile Include="Population.cs" />
+    <Compile Include="MutatationData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

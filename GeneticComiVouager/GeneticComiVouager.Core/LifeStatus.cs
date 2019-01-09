@@ -1,4 +1,4 @@
-﻿namespace GeneticLine.Core
+﻿namespace GeneticComiVouager.Core
 {
     public enum LifeStatus: byte
     {

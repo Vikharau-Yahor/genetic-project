@@ -54,8 +54,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Mappers\Mapper.cs" />
     <Compile Include="Models\CityVm.cs" />
-    <Compile Include="Utils\LineExtensions.cs" />
+    <Compile Include="Utils\Painter.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

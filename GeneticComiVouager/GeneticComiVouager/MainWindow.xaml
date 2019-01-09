@@ -22,5 +22,11 @@
 		<Rectangle x:Name="TopPanel" Fill="#FFF1ECEC" Margin="0" Stroke="#FF224F9C" Grid.ColumnSpan="3"/>
 		<Button x:Name="BGenerate" Content="Generate" HorizontalAlignment="Left" Margin="10,10,0,0" Grid.Row="2" VerticalAlignment="Top" Width="67" Height="45" Click="Generate_Click"/>
 		<Button x:Name="BClear" Content="Clear" HorizontalAlignment="Left" Margin="82,10,0,0" Grid.Row="2" VerticalAlignment="Top" Width="75" Click="BClear_Click"/>
+		<TextBox x:Name="TBPopulationSize" HorizontalAlignment="Left" Margin="385,11,0,31" Grid.Row="2" TextWrapping="Wrap" Text="15" Width="120" Grid.ColumnSpan="3"/>
+		<Label x:Name="LBestPath" Content="Best path: " HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="147"/>
+		<Label x:Name="LBGenerationNumber" Content="Generation: " HorizontalAlignment="Left" Margin="10,33,0,0" VerticalAlignment="Top" Width="147"/>
+		<Label Content="Population size:" HorizontalAlignment="Left" Margin="248,10,0,0" Grid.Row="2" VerticalAlignment="Top"/>
+		<TextBox x:Name="TBEvolutionSpeed" HorizontalAlignment="Left" Margin="385,36,0,6" Grid.Row="2" TextWrapping="Wrap" Text="2000" Width="120" Grid.ColumnSpan="3"/>
+		<Label Content="Evolution Speed (in ms):" HorizontalAlignment="Left" Margin="248,36,0,0" Grid.Row="2" VerticalAlignment="Top"/>
 	</Grid>
 </Window>

@@ -2,28 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace GeneticLine.Core
+namespace GeneticComiVouager.Core
 {
 	public class Population
 	{
-        private Gene _xGoal;
-        private Gene _yGoal;
-        private int _killsNumberPerGeneration;
+		private MutatationData[] _mutations;
+		private int _killsNumberPerGeneration;
 
-		public readonly int Id;
         public int GenerationNumber { get; private set; }
 		public IList<Individual> Individuals { get; set; }
 		public Individual BestIndividual { get; private set; }
 
 		public event Action<Population> OnPopulationLifecycleEnd;
 
-		public Population(int id, int populationSize, double deathRate, Gene xGoal, Gene yGoal)
+		public Population(int populationSize, double deathRate, MutatationData[] mutations)
 		{
-			Id = id;
 			GenerationNumber = 1;
             _killsNumberPerGeneration = (int)(populationSize * deathRate);
-            _xGoal = xGoal;
-            _yGoal = yGoal;
+			_mutations = mutations;
 			Individuals = new List<Individual>();
 
 			fillPopulation(populationSize);
@@ -69,9 +65,11 @@ namespace GeneticLine.Core
 				{
 					case LifeStatus.Childhood:
 						individual.Grow();
+						Mutator.Mutate(individual, _mutations);
+						Mutator.Mutate(individual, _mutations);
 						break;
 					case LifeStatus.AdultLife:
-						Mutator.Mutate(individual, _xGoal, _yGoal);
+						Mutator.Mutate(individual, _mutations);
 						break;
 					default: throw new Exception("Incorrect life status (dead individual can't do any actions)");
 				}
@@ -94,9 +92,7 @@ namespace GeneticLine.Core
 
         private void updateSurvivalRate(Individual individual)
         {
-            var xGeneQuality = individual.XGene.Quality;
-            var yGeneQuality = individual.YGene.Quality;
-            individual.SurvivalRate = (xGeneQuality + yGeneQuality) / 2;
+            individual.SurvivalRate = individual.Gene.Quality;
         }
 
 		private void fillPopulation(int populationSize)
@@ -104,7 +100,7 @@ namespace GeneticLine.Core
 			for (int i = 0; i < populationSize; i++)
 			{
 				var individual = new Individual();
-				Mutator.InitialMutate(individual, _xGoal, _yGoal);
+				Mutator.InitialMutate(individual, _mutations);
 				Individuals.Add(individual);
 			}
 		}
