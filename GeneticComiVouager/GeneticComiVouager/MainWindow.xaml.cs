@@ -72,16 +72,30 @@ namespace GeneticLine
 
 		private void Generate_Click(object sender, RoutedEventArgs e)
 		{
+			if(_evolution != null)
+			{
+				_evolution.Stop();
+				Painter.ClearBuffer();
+			}
+
 			var mutations = _cities.Select(x => x.ToMutationData()).ToArray();
+			if (mutations == null || mutations.Length < 3)
+			{
+				MessageBox.Show($"Required at least 3 cities to start calculation");
+				return;
+			}
 			_evolution = new Evolution(mutations, Int32.Parse(TBPopulationSize.Text), Int32.Parse(TBEvolutionSpeed.Text));
 			_evolution.Population.OnPopulationLifecycleEnd += Render;
+			_evolution.OnMaxGenerationAchieved += showNotification;
 			_evolution.RunEvolutionCycle();
 		}
 
 		private void BClear_Click(object sender, RoutedEventArgs e)
 		{
-			CanvasInitial.Children.Clear();
 			_cities.Clear();
+			_evolution.Stop();
+			Painter.ClearBuffer();
+			CanvasInitial.Children.Clear();
 		}
 
 		private void Render(Population population)
@@ -93,6 +107,11 @@ namespace GeneticLine
 				LBestPath.Content = $"Best range: {bestPathRange}";
 				LBGenerationNumber.Content = $"Generation: {population.GenerationNumber}";
 			});
+		}
+
+		private void showNotification(double bestRange)
+		{
+			MessageBox.Show($"The best range was found: {bestRange}");
 		}
 	}
 }

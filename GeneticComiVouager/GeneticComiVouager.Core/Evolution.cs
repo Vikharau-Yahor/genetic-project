@@ -10,6 +10,7 @@ namespace GeneticComiVouager.Core
 {
 	public class Evolution
 	{
+		private int maxGeneration = 1000;
 		private const double DeathRate = 0.4;
 		private bool _evolutionStopped = false;
 		private Task _lifeCycleTask;
@@ -17,6 +18,8 @@ namespace GeneticComiVouager.Core
 
 		//evolution laws
 		private int _populationSize;
+
+		public event Action<double> OnMaxGenerationAchieved;
 
 		public Population Population { get; private set; }
 
@@ -37,6 +40,13 @@ namespace GeneticComiVouager.Core
 		{
 			while (!_evolutionStopped)
 			{
+				if (population.GenerationNumber == maxGeneration)
+				{
+					OnMaxGenerationAchieved?.Invoke(population.BestIndividual.SurvivalRate * (-1));
+					_evolutionStopped = true;
+					break;
+				}
+
 				population.ExecuteLifeCycle();
 				Thread.Sleep(_evolutionSpeed);
 			}

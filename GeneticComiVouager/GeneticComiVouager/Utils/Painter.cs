@@ -24,6 +24,14 @@ namespace GeneticComiVouager.Utils
 			_cities = citiesPath;
 		}
 
+		public static void ClearBuffer()
+		{
+			foreach (var element in _elements)
+				_workingCanvas.Children.Remove(element);
+
+			_elements.Clear();
+		}
+
 		public static void Render(int[] citiesPath, Color color, double opacity, bool isTheBestPath = false)
 		{
 			//foreach (var line in _lines)
